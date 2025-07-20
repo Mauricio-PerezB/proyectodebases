@@ -2,9 +2,23 @@
 <html>
 <head>
   <title>Gestión Alumnos</title>
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    h1, h2 { color: #b3b0b0; }
+    form { margin-bottom: 20px; }
+    table { width: 100%; margin-top: 20px; }
+    button { margin-right: 5px; }
+    #formAlumno, #modificarForm { display: none; margin-top: 20px; }
+  </style>
 </head>
 <body>
-  <h1>Insertar Alumno</h1>
+
+  <h1>Gestión de Alumnos</h1>
+  <button onclick="mostrarFormularioInsertar()">➕ Crear Alumno</button>
+
   <form id="formAlumno">
     <input type="text" id="rut" placeholder="Rut" required />
     <input type="text" id="nombres" placeholder="Nombres" required />
@@ -14,19 +28,27 @@
     <input type="text" id="direccion" placeholder="Dirección" />
     <input type="text" id="ciudad" placeholder="Ciudad" />
     <button type="submit">Insertar</button>
+    <button type="button" onclick="ocultarFormularioInsertar()">Cancelar</button>
   </form>
 
-  <h2>Lista de Alumnos</h2>
-  <button onclick="consultarAlumnos()">Consultar Alumnos</button>
-  <ul id="listaAlumnos"></ul>
+  <table id="tablaAlumnos" class="display">
+    <thead>
+      <tr>
+        <th>Rut</th>
+        <th>Nombres</th>
+        <th>Apellido Paterno</th>
+        <th>Apellido Materno</th>
+        <th>Fecha Nacimiento</th>
+        <th>Dirección</th>
+        <th>Ciudad</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
-  <h2>Buscar y Modificar Alumno</h2>
-  <form id="buscarForm">
-    <input type="text" id="buscarRut" placeholder="Rut del alumno a buscar" required />
-    <button type="submit">Buscar</button>
-  </form>
-
-  <form id="modificarForm" style="display:none;">
+  <h2>Modificar Alumno</h2>
+  <form id="modificarForm">
     <input type="text" id="mod_nombres" placeholder="Nombres" required />
     <input type="text" id="mod_apellido_paterno" placeholder="Apellido Paterno" required />
     <input type="text" id="mod_apellido_materno" placeholder="Apellido Materno" required />
@@ -34,8 +56,11 @@
     <input type="text" id="mod_direccion" placeholder="Dirección" />
     <input type="text" id="mod_ciudad" placeholder="Ciudad" />
     <button type="submit">Actualizar</button>
+    <button type="button" onclick="ocultarFormularioModificar()">Cancelar</button>
   </form>
 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
