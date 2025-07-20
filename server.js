@@ -5,21 +5,18 @@ import pg from 'pg';
 const app = express();
 const port = 3000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public')); // Servir archivos estáticos de la carpeta public
+app.use(express.static('public')); 
 
-// Configuración de PostgreSQL
 const pool = new pg.Pool({
   user: 'rleyva',
   host: 'pgsqltrans.face.ubiobio.cl',
   database: 'rleyva_bd',
   password: 'pass123',
-  port: 5432, // <-- aquí importante: normalmente 5432
+  port: 5432,
 });
 
-// Insertar alumno
 app.post('/alumnos', async (req, res) => {
   const { rut, nombres, apellido_paterno, apellido_materno, fecha_nacimiento, direccion, ciudad } = req.body;
   try {
@@ -35,7 +32,6 @@ app.post('/alumnos', async (req, res) => {
   }
 });
 
-// Consultar todos los alumnos
 app.get('/alumnos', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM alumno');
@@ -46,7 +42,6 @@ app.get('/alumnos', async (req, res) => {
   }
 });
 
-// Obtener un alumno por rut
 app.get('/alumnos/:rut', async (req, res) => {
   const rut = req.params.rut;
   try {
@@ -61,7 +56,6 @@ app.get('/alumnos/:rut', async (req, res) => {
   }
 });
 
-// Modificar alumno por rut
 app.put('/alumnos/:rut', async (req, res) => {
   const rut = req.params.rut;
   const { nombres, apellido_paterno, apellido_materno, fecha_nacimiento, direccion, ciudad } = req.body;
@@ -84,7 +78,6 @@ app.put('/alumnos/:rut', async (req, res) => {
   }
 });
 
-// Iniciar servidor
 app.listen(port, () => {
   console.log(`Servidor escuchando en http://localhost:${port}`);
 });

@@ -1,38 +1,69 @@
-let tabla; 
-let rutBuscado = ''; 
+let tabla;
+let rutBuscado = '';
 
 document.addEventListener('DOMContentLoaded', () => {
   tabla = $('#tablaAlumnos').DataTable({
-  language: {
-    lengthMenu: "Mostrar _MENU_ registros",
-    search: "Buscar:",
-    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-    paginate: {
-      previous: "Anterior",
-      next: "Siguiente"
+    language: {
+      lengthMenu: "Mostrar _MENU_ registros",
+      search: "Buscar:",
+      info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+      paginate: {
+        previous: "Anterior",
+        next: "Siguiente"
+      },
+      zeroRecords: "No se encontraron resultados",
+      infoEmpty: "Mostrando 0 a 0 de 0 registros",
+      infoFiltered: "(filtrado de _MAX_ registros totales)"
     },
-    zeroRecords: "No se encontraron resultados",
-    infoEmpty: "Mostrando 0 a 0 de 0 registros",
-    infoFiltered: "(filtrado de _MAX_ registros totales)"
-  },
-  columnDefs: [
-    { targets: 0, width: "120px" },
-    { targets: 1, width: "100px" },
-    { targets: 2, width: "100px" },
-    { targets: 3, width: "100px" },
-    { targets: 4, width: "100px" },
-    { targets: 5, width: "120px" },
-    { targets: 6, width: "120px" },
-    { targets: 7, width: "100px" }
-  ]
-});
+    columnDefs: [
+      { targets: 0, width: "120px" },
+      { targets: 1, width: "100px" },
+      { targets: 2, width: "100px" },
+      { targets: 3, width: "100px" },
+      { targets: 4, width: "100px" },
+      { targets: 5, width: "120px" },
+      { targets: 6, width: "120px" },
+      { targets: 7, width: "100px" }
+    ]
+  });
 
   cargarAlumnos();
 
-  document.getElementById('formAlumno').addEventListener('submit', insertarAlumno);
-  document.getElementById('modificarForm').addEventListener('submit', actualizarAlumno);
+  // Eventos para insertar y actualizar
+  const formAlumno = document.getElementById('formAlumno');
+  if (formAlumno) {
+    formAlumno.addEventListener('submit', insertarAlumno);
+  }
+
+  const formModificar = document.getElementById('modificarForm');
+  if (formModificar) {
+    formModificar.addEventListener('submit', actualizarAlumno);
+  }
+
+  // Botones para mostrar/ocultar modal
+  const btnCrear = document.getElementById('btnCrearAlumno');
+  if (btnCrear) {
+    btnCrear.addEventListener('click', mostrarFormularioInsertar);
+  }
+
+  const btnRegresar = document.getElementById('btnRegresar');
+  if (btnRegresar) {
+    btnRegresar.addEventListener('click', ocultarFormularioInsertar);
+  }
+
+  // También cerrar modal si hacen click en el overlay
+  const overlay = document.getElementById('overlay');
+  if (overlay) {
+    overlay.addEventListener('click', ocultarFormularioInsertar);
+  }
+
+  const btnCancelarModificar = document.getElementById('btnCancelarModificar');
+  if (btnCancelarModificar) {
+    btnCancelarModificar.addEventListener('click', ocultarFormularioModificar);
+  }
 });
 
+// Cargar alumnos en la tabla
 async function cargarAlumnos() {
   const res = await fetch('/alumnos');
   const alumnos = await res.json();
@@ -53,6 +84,7 @@ async function cargarAlumnos() {
   tabla.draw();
 }
 
+// Insertar alumno
 async function insertarAlumno(e) {
   e.preventDefault();
 
@@ -102,6 +134,7 @@ async function buscarAlumno(rut) {
   }
 }
 
+// Actualizar alumno
 async function actualizarAlumno(e) {
   e.preventDefault();
 
@@ -129,18 +162,24 @@ async function actualizarAlumno(e) {
   }
 }
 
+// Mostrar modal insertar
 function mostrarFormularioInsertar() {
-  document.getElementById('formAlumno').style.display = 'block';
+  document.getElementById('modalFormulario').style.display = 'block';
+  document.getElementById('overlay').style.display = 'block';
 }
 
+// Ocultar modal insertar
 function ocultarFormularioInsertar() {
-  document.getElementById('formAlumno').style.display = 'none';
+  document.getElementById('modalFormulario').style.display = 'none';
+  document.getElementById('overlay').style.display = 'none';
 }
 
 function mostrarFormularioModificar() {
-  document.getElementById('modificarForm').style.display = 'block';
+  document.getElementById('modalModificar').style.display = 'block';
+  document.getElementById('overlay').style.display = 'block';
 }
 
 function ocultarFormularioModificar() {
-  document.getElementById('modificarForm').style.display = 'none';
+  document.getElementById('modalModificar').style.display = 'none';
+  document.getElementById('overlay').style.display = 'none';
 }
