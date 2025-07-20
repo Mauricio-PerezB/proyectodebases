@@ -1,37 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gestión Alumnos</title>
 
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    body { font-family: Arial, sans-serif; margin: 40px; }
-    h1, h2 { color: #b3b0b0; }
-    form { margin-bottom: 20px; }
-    table { width: 100%; margin-top: 20px; }
-    button { margin-right: 5px; }
-    #formAlumno, #modificarForm { display: none; margin-top: 20px; }
-  </style>
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+  <!-- Tu CSS personalizado -->
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <h1>Gestión de Alumnos</h1>
-  <button onclick="mostrarFormularioInsertar()">➕ Crear Alumno</button>
+  <!-- Botón para mostrar formulario -->
+  <button id="btnCrearAlumno">➕ Crear Alumno</button>
 
-  <form id="formAlumno">
-    <input type="text" id="rut" placeholder="Rut" required />
-    <input type="text" id="nombres" placeholder="Nombres" required />
-    <input type="text" id="apellido_paterno" placeholder="Apellido Paterno" required />
-    <input type="text" id="apellido_materno" placeholder="Apellido Materno" required />
-    <input type="date" id="fecha_nacimiento" placeholder="Fecha de nacimiento" required />
-    <input type="text" id="direccion" placeholder="Dirección" />
-    <input type="text" id="ciudad" placeholder="Ciudad" />
-    <button type="submit">Insertar</button>
-    <button type="button" onclick="ocultarFormularioInsertar()">Cancelar</button>
-  </form>
-
-  <table id="tablaAlumnos" class="display">
+  <!-- Tabla visible inicialmente -->
+  <table id="tablaAlumnos" class="display" style="width:100%">
     <thead>
       <tr>
         <th>Rut</th>
@@ -47,20 +32,29 @@
     <tbody></tbody>
   </table>
 
-  <h2>Modificar Alumno</h2>
-  <form id="modificarForm">
-    <input type="text" id="mod_nombres" placeholder="Nombres" required />
-    <input type="text" id="mod_apellido_paterno" placeholder="Apellido Paterno" required />
-    <input type="text" id="mod_apellido_materno" placeholder="Apellido Materno" required />
-    <input type="date" id="mod_fecha_nacimiento" placeholder="Fecha de nacimiento" required />
-    <input type="text" id="mod_direccion" placeholder="Dirección" />
-    <input type="text" id="mod_ciudad" placeholder="Ciudad" />
-    <button type="submit">Actualizar</button>
-    <button type="button" onclick="ocultarFormularioModificar()">Cancelar</button>
+  <!-- Overlay para oscurecer el fondo cuando se muestra el formulario -->
+  <div id="overlay"></div>
+
+  <!-- Formulario de creación (oculto inicialmente) -->
+  <form id="formAlumno">
+    <h2>Insertar Alumno</h2>
+    <input type="text" id="rut" placeholder="Rut" required />
+    <input type="text" id="nombres" placeholder="Nombres" required />
+    <input type="text" id="apellido_paterno" placeholder="Apellido Paterno" required />
+    <input type="text" id="apellido_materno" placeholder="Apellido Materno" required />
+    <input type="date" id="fecha_nacimiento" placeholder="Fecha de nacimiento" required />
+    <input type="text" id="direccion" placeholder="Dirección" />
+    <input type="text" id="ciudad" placeholder="Ciudad" />
+    <br /><br />
+    <button type="submit">Insertar</button>
+    <button type="button" id="btnRegresar">Regresar</button>
   </form>
 
+  <!-- Scripts jQuery y DataTables -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <!-- Tu JS personalizado -->
   <script src="script.js"></script>
+
 </body>
 </html>
