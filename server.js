@@ -1,38 +1,90 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const pool = require('./db');
+import express from 'express';
+import cors from 'cors';
+import pg from 'pg';
 
 const app = express();
+const port = 3000;
+
+// Middleware
 app.use(cors());
-app.use(bodyParser.json());
-app.use(express.static('public'));
+app.use(express.json());
+app.use(express.static('public')); // Servir archivos estáticos de la carpeta public
 
-// Insertar datos (punto 3)
-app.post('/insert', async (req, res) => {
-  const { nombre, edad } = req.body;
-  await pool.query('INSERT INTO personas(nombre, edad) VALUES($1, $2)', [nombre, edad]);
-  res.send('Datos insertados');
+// Configuración de PostgreSQL
+const pool = new pg.Pool({
+  user: 'rleyva',
+  host: 'pgsqltrans.face.ubiobio.cl',
+  database: 'rleyva_bd',
+  password: 'pass123',
+  port: 5432, // <-- aquí importante: normalmente 5432
 });
 
-// Modificar datos (punto 4)
-app.put('/update', async (req, res) => {
-  const { id, nombre, edad } = req.body;
-  await pool.query('UPDATE personas SET nombre=$1, edad=$2 WHERE id=$3', [nombre, edad, id]);
-  res.send('Datos modificados');
-});
-
-// Consultar datos (punto 5)
-app.get('/consulta', async (req, res) => {
+// Insertar alumno
+app.post('/alumnos', async (req, res) => {
+  const { rut, nombres, apellido_paterno, apellido_materno, fecha_nacimiento, direccion, ciudad } = req.body;
   try {
-    const result = await pool.query('SELECT * FROM personas');
-    res.json(result.rows);
+    const query = `
+      INSERT INTO alumno (rut, nombres, apellido_paterno, apellido_materno, fecha_nacimiento, direccion, ciudad)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `;
+    await pool.query(query, [rut, nombres, apellido_paterno, apellido_materno, fecha_nacimiento, direccion, ciudad]);
+    res.status(201).json({ mensaje: 'Alumno insertado correctamente' });
   } catch (error) {
-    console.error('Error en consulta:', error);
-    res.status(500).send('Error en consulta');
+    console.error(error);
+    res.status(500).json({ error: 'Error al insertar alumno' });
   }
 });
 
-app.listen(3000, () => {
-  console.log('Servidor corriendo en http://localhost:3000');
+// Consultar todos los alumnos
+app.get('/alumnos', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM alumno');
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al consultar alumnos' });
+  }
+});
+
+// Obtener un alumno por rut
+app.get('/alumnos/:rut', async (req, res) => {
+  const rut = req.params.rut;
+  try {
+    const result = await pool.query('SELECT * FROM alumno WHERE rut=$1', [rut]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Alumno no encontrado' });
+    }
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al buscar alumno' });
+  }
+});
+
+// Modificar alumno por rut
+app.put('/alumnos/:rut', async (req, res) => {
+  const rut = req.params.rut;
+  const { nombres, apellido_paterno, apellido_materno, fecha_nacimiento, direccion, ciudad } = req.body;
+  try {
+    const query = `
+      UPDATE alumno
+      SET nombres=$1, apellido_paterno=$2, apellido_materno=$3, fecha_nacimiento=$4, direccion=$5, ciudad=$6
+      WHERE rut=$7
+    `;
+    const result = await pool.query(query, [nombres, apellido_paterno, apellido_materno, fecha_nacimiento, direccion, ciudad, rut]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Alumno no encontrado para actualizar' });
+    }
+
+    res.json({ mensaje: 'Alumno actualizado correctamente' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al modificar alumno' });
+  }
+});
+
+// Iniciar servidor
+app.listen(port, () => {
+  console.log(`Servidor escuchando en http://localhost:${port}`);
 });

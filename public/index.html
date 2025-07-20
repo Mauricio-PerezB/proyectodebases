@@ -1,20 +1,40 @@
-<script src="script.js"></script>
 <!DOCTYPE html>
 <html>
 <head>
-  <title>App BD</title>
+  <title>Gestión Alumnos</title>
 </head>
 <body>
-  <h1>Formulario BD</h1>
-  <form id="formulario">
-    <input type="text" id="nombre" placeholder="Nombre" required>
-    <input type="number" id="edad" placeholder="Edad" required>
+  <h1>Insertar Alumno</h1>
+  <form id="formAlumno">
+    <input type="text" id="rut" placeholder="Rut" required />
+    <input type="text" id="nombres" placeholder="Nombres" required />
+    <input type="text" id="apellido_paterno" placeholder="Apellido Paterno" required />
+    <input type="text" id="apellido_materno" placeholder="Apellido Materno" required />
+    <input type="date" id="fecha_nacimiento" placeholder="Fecha de nacimiento" required />
+    <input type="text" id="direccion" placeholder="Dirección" />
+    <input type="text" id="ciudad" placeholder="Ciudad" />
     <button type="submit">Insertar</button>
   </form>
 
-  <h2>Resultado Consulta</h2>
-  <button onclick="consultar()">Consultar</button>
-  <ul id="resultado"></ul>
+  <h2>Lista de Alumnos</h2>
+  <button onclick="consultarAlumnos()">Consultar Alumnos</button>
+  <ul id="listaAlumnos"></ul>
+
+  <h2>Buscar y Modificar Alumno</h2>
+  <form id="buscarForm">
+    <input type="text" id="buscarRut" placeholder="Rut del alumno a buscar" required />
+    <button type="submit">Buscar</button>
+  </form>
+
+  <form id="modificarForm" style="display:none;">
+    <input type="text" id="mod_nombres" placeholder="Nombres" required />
+    <input type="text" id="mod_apellido_paterno" placeholder="Apellido Paterno" required />
+    <input type="text" id="mod_apellido_materno" placeholder="Apellido Materno" required />
+    <input type="date" id="mod_fecha_nacimiento" placeholder="Fecha de nacimiento" required />
+    <input type="text" id="mod_direccion" placeholder="Dirección" />
+    <input type="text" id="mod_ciudad" placeholder="Ciudad" />
+    <button type="submit">Actualizar</button>
+  </form>
 
   <script src="script.js"></script>
 </body>
