@@ -1,11 +1,59 @@
-const form = document.getElementById('formAlumno');
-const lista = document.getElementById('listaAlumnos');
-const buscarForm = document.getElementById('buscarForm');
-const modificarForm = document.getElementById('modificarForm');
-let rutBuscado = ''; // guardamos el rut del alumno que estamos editando
+let tabla; 
+let rutBuscado = ''; 
 
-// Insertar alumno
-form.addEventListener('submit', async (e) => {
+document.addEventListener('DOMContentLoaded', () => {
+  tabla = $('#tablaAlumnos').DataTable({
+  language: {
+    lengthMenu: "Mostrar _MENU_ registros",
+    search: "Buscar:",
+    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+    paginate: {
+      previous: "Anterior",
+      next: "Siguiente"
+    },
+    zeroRecords: "No se encontraron resultados",
+    infoEmpty: "Mostrando 0 a 0 de 0 registros",
+    infoFiltered: "(filtrado de _MAX_ registros totales)"
+  },
+  columnDefs: [
+    { targets: 0, width: "120px" },
+    { targets: 1, width: "100px" },
+    { targets: 2, width: "100px" },
+    { targets: 3, width: "100px" },
+    { targets: 4, width: "100px" },
+    { targets: 5, width: "120px" },
+    { targets: 6, width: "120px" },
+    { targets: 7, width: "100px" }
+  ]
+});
+
+  cargarAlumnos();
+
+  document.getElementById('formAlumno').addEventListener('submit', insertarAlumno);
+  document.getElementById('modificarForm').addEventListener('submit', actualizarAlumno);
+});
+
+async function cargarAlumnos() {
+  const res = await fetch('/alumnos');
+  const alumnos = await res.json();
+
+  tabla.clear();
+  alumnos.forEach(a => {
+    tabla.row.add([
+      a.rut,
+      a.nombres,
+      a.apellido_paterno,
+      a.apellido_materno,
+      a.fecha_nacimiento ? a.fecha_nacimiento.split('T')[0] : '',
+      a.direccion || '',
+      a.ciudad || '',
+      `<button onclick="buscarAlumno('${a.rut}')">✏️ Editar</button>`
+    ]);
+  });
+  tabla.draw();
+}
+
+async function insertarAlumno(e) {
   e.preventDefault();
 
   const alumno = {
@@ -26,36 +74,21 @@ form.addEventListener('submit', async (e) => {
 
   if (res.ok) {
     alert('Alumno insertado correctamente');
-    form.reset();
-    consultarAlumnos();
+    document.getElementById('formAlumno').reset();
+    ocultarFormularioInsertar();
+    cargarAlumnos();
   } else {
     alert('Error al insertar alumno');
   }
-});
-
-// Consultar todos los alumnos
-async function consultarAlumnos() {
-  const res = await fetch('/alumnos');
-  const alumnos = await res.json();
-
-  lista.innerHTML = '';
-  alumnos.forEach(a => {
-    const li = document.createElement('li');
-    li.textContent = `${a.rut} - ${a.nombres} ${a.apellido_paterno} ${a.apellido_materno}`;
-    lista.appendChild(li);
-  });
 }
 
-// Buscar alumno por rut
-buscarForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  rutBuscado = document.getElementById('buscarRut').value;
+async function buscarAlumno(rut) {
+  rutBuscado = rut;
 
-  const res = await fetch(`/alumnos/${rutBuscado}`);
+  const res = await fetch(`/alumnos/${rut}`);
   if (res.ok) {
     const alumno = await res.json();
 
-    // Rellenamos el formulario de modificar
     document.getElementById('mod_nombres').value = alumno.nombres;
     document.getElementById('mod_apellido_paterno').value = alumno.apellido_paterno;
     document.getElementById('mod_apellido_materno').value = alumno.apellido_materno;
@@ -63,15 +96,13 @@ buscarForm.addEventListener('submit', async (e) => {
     document.getElementById('mod_direccion').value = alumno.direccion || '';
     document.getElementById('mod_ciudad').value = alumno.ciudad || '';
 
-    modificarForm.style.display = 'block';
+    mostrarFormularioModificar();
   } else {
     alert('Alumno no encontrado');
-    modificarForm.style.display = 'none';
   }
-});
+}
 
-// Actualizar alumno
-modificarForm.addEventListener('submit', async (e) => {
+async function actualizarAlumno(e) {
   e.preventDefault();
 
   const alumnoActualizado = {
@@ -91,9 +122,25 @@ modificarForm.addEventListener('submit', async (e) => {
 
   if (res.ok) {
     alert('Alumno actualizado correctamente');
-    modificarForm.style.display = 'none';
-    consultarAlumnos();
+    ocultarFormularioModificar();
+    cargarAlumnos();
   } else {
     alert('Error al actualizar alumno');
   }
-});
+}
+
+function mostrarFormularioInsertar() {
+  document.getElementById('formAlumno').style.display = 'block';
+}
+
+function ocultarFormularioInsertar() {
+  document.getElementById('formAlumno').style.display = 'none';
+}
+
+function mostrarFormularioModificar() {
+  document.getElementById('modificarForm').style.display = 'block';
+}
+
+function ocultarFormularioModificar() {
+  document.getElementById('modificarForm').style.display = 'none';
+}

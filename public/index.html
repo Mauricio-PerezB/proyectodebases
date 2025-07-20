@@ -1,102 +1,60 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gestión Alumnos</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: url('/imagenes/fondo.jpg') no-repeat center center fixed; /* Imagen de fondo */
-      background-size: cover; /* Asegura que la imagen cubra toda la pantalla */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .insertar-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 40px; /* Espacio debajo de la tabla de insertar */
-      background: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
-      border-radius: 12px; /* Bordes redondeados */
-      padding: 20px; /* Espacio interno */
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Sombra para darle profundidad */
-    }
-    table {
-      width: 100%; /* Asegura que la tabla ocupe todo el ancho del contenedor */
-      border-collapse: collapse;
-    }
-    th {
-      border-bottom: 2px solid #28a745; /* Línea en la parte inferior de los encabezados */
-      padding-bottom: 10px;
-      color: #28a745; /* Color verde para el texto del encabezado */
-    }
-    h1 {
-      color: #333;
-      text-align: center; /* Centrar texto */
-    }
-    input {
-      display: block;
-      margin: 10px 0;
-      padding: 10px;
-      width: calc(100% - 22px);
-      border: 2px solid #ccc;
-      border-radius: 4px;
-      transition: border-color 0.3s; /* Transición suave en el borde */
-    }
-    input:focus {
-      border-color: #28a745; /* Borde verde al enfocar */
-      outline: none; /* Quitar el contorno por defecto */
-    }
-    button {
-      padding: 10px;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s; /* Transición suave */
-      width: auto; /* Botón ocupa solo el ancho necesario */
-      margin-right: 10px; /* Espacio entre botones */
-    }
-    button:hover {
-      background-color: #218838; /* Color más oscuro al pasar el mouse */
-    }
-  </style>
+
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+  <!-- Tu CSS personalizado -->
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="insertar-container">
-    <table>
-      <tr>
-        <th colspan="2"><h1>Insertar Alumno</h1></th>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <form id="formAlumno">
-            <input type="text" id="rut" placeholder="Rut" required />
-            <input type="text" id="nombres" placeholder="Nombres" required />
-            <input type="text" id="apellido_paterno" placeholder="Apellido Paterno" required />
-            <input type="text" id="apellido_materno" placeholder="Apellido Materno" required />
-            <input type="date" id="fecha_nacimiento" placeholder="Fecha de nacimiento" required />
-            <input type="text" id="direccion" placeholder="Dirección" />
-            <input type="text" id="ciudad" placeholder="Ciudad" />
-            <button type="submit">Insertar</button>
-            <button type="button" onclick="regresar()">Regresar</button>
-          </form>
-        </td>
-      </tr>
-    </table>
-  </div>
 
-  <script>
-    function regresar() {
-      // Lógica para regresar a la página anterior o a otra sección
-      alert('Regresando...');
-    }
-  </script>
+  <!-- Botón para mostrar formulario -->
+  <button id="btnCrearAlumno">➕ Crear Alumno</button>
+
+  <!-- Tabla visible inicialmente -->
+  <table id="tablaAlumnos" class="display" style="width:100%">
+    <thead>
+      <tr>
+        <th>Rut</th>
+        <th>Nombres</th>
+        <th>Apellido Paterno</th>
+        <th>Apellido Materno</th>
+        <th>Fecha Nacimiento</th>
+        <th>Dirección</th>
+        <th>Ciudad</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <!-- Overlay para oscurecer el fondo cuando se muestra el formulario -->
+  <div id="overlay"></div>
+
+  <!-- Formulario de creación (oculto inicialmente) -->
+  <form id="formAlumno">
+    <h2>Insertar Alumno</h2>
+    <input type="text" id="rut" placeholder="Rut" required />
+    <input type="text" id="nombres" placeholder="Nombres" required />
+    <input type="text" id="apellido_paterno" placeholder="Apellido Paterno" required />
+    <input type="text" id="apellido_materno" placeholder="Apellido Materno" required />
+    <input type="date" id="fecha_nacimiento" placeholder="Fecha de nacimiento" required />
+    <input type="text" id="direccion" placeholder="Dirección" />
+    <input type="text" id="ciudad" placeholder="Ciudad" />
+    <br /><br />
+    <button type="submit">Insertar</button>
+    <button type="button" id="btnRegresar">Regresar</button>
+  </form>
+
+  <!-- Scripts jQuery y DataTables -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <!-- Tu JS personalizado -->
+  <script src="script.js"></script>
+
 </body>
 </html>
