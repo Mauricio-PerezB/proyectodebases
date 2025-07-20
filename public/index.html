@@ -12,10 +12,10 @@
 </head>
 <body>
 
-  <!-- Botón para mostrar formulario -->
+  <!-- Botón para mostrar el modal -->
   <button id="btnCrearAlumno">➕ Crear Alumno</button>
-
-  <!-- Tabla visible inicialmente -->
+  <h1>GESTION DE ALUMNOS</h1>
+  <!-- Tabla visible al inicio -->
   <table id="tablaAlumnos" class="display" style="width:100%">
     <thead>
       <tr>
@@ -32,29 +32,43 @@
     <tbody></tbody>
   </table>
 
-  <!-- Overlay para oscurecer el fondo cuando se muestra el formulario -->
-  <div id="overlay"></div>
+  <!-- Overlay oscuro -->
+  <div id="overlay" class="overlay"></div>
 
-  <!-- Formulario de creación (oculto inicialmente) -->
-  <form id="formAlumno">
-    <h2>Insertar Alumno</h2>
-    <input type="text" id="rut" placeholder="Rut" required />
-    <input type="text" id="nombres" placeholder="Nombres" required />
-    <input type="text" id="apellido_paterno" placeholder="Apellido Paterno" required />
-    <input type="text" id="apellido_materno" placeholder="Apellido Materno" required />
-    <input type="date" id="fecha_nacimiento" placeholder="Fecha de nacimiento" required />
-    <input type="text" id="direccion" placeholder="Dirección" />
-    <input type="text" id="ciudad" placeholder="Ciudad" />
+  <!-- Modal del formulario -->
+  <div id="modalFormulario" class="modal">
+    <form id="formAlumno">
+      <h2>Insertar Alumno</h2>
+      <input type="text" id="rut" placeholder="Rut" required />
+      <input type="text" id="nombres" placeholder="Nombres" required />
+      <input type="text" id="apellido_paterno" placeholder="Apellido Paterno" required />
+      <input type="text" id="apellido_materno" placeholder="Apellido Materno" required />
+      <input type="date" id="fecha_nacimiento" placeholder="Fecha de nacimiento" required />
+      <input type="text" id="direccion" placeholder="Dirección" />
+      <input type="text" id="ciudad" placeholder="Ciudad" />
+      <br /><br />
+      <button type="submit">Insertar</button>
+      <button type="button" id="btnRegresar">Regresar</button>
+    </form>
+  </div>
+
+  <div id="modalModificar" class="modal" style="display: none;">
+  <form id="modificarForm">
+    <h2>Modificar Alumno</h2>
+    <input type="text" id="mod_nombres" placeholder="Nombres" required />
+    <input type="text" id="mod_apellido_paterno" placeholder="Apellido Paterno" required />
+    <input type="text" id="mod_apellido_materno" placeholder="Apellido Materno" required />
+    <input type="date" id="mod_fecha_nacimiento" placeholder="Fecha de nacimiento" required />
+    <input type="text" id="mod_direccion" placeholder="Dirección" />
+    <input type="text" id="mod_ciudad" placeholder="Ciudad" />
     <br /><br />
-    <button type="submit">Insertar</button>
-    <button type="button" id="btnRegresar">Regresar</button>
+    <button type="submit">Actualizar</button>
+    <button type="button" id="btnCancelarModificar">Cancelar</button>
   </form>
+  </div>
 
-  <!-- Scripts jQuery y DataTables -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-  <!-- Tu JS personalizado -->
   <script src="script.js"></script>
-
 </body>
 </html>
